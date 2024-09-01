@@ -1,22 +1,49 @@
-This directory contains the GNU Compiler Collection (GCC).
+There are several problems in this file and you will select one based
+on your UT EID:
 
-The GNU Compiler Collection is free software.  See the files whose
-names start with COPYING for copying permission.  The manuals, and
-some of the runtime libraries, are under different terms; see the
-individual source files for details.
+```
+match hash(UT EID) % 4
+0 => use LLVM 18
+1 => use GCC 14
+2 => use LLVM 17
+3 => use GCC 13
+```
 
-The directory INSTALL contains copies of the installation information
-as HTML and plain text.  The source of this information is
-gcc/doc/install.texi.  The installation information includes details
-of what is included in the GCC sources and what files GCC installs.
+hash(x) is defined as follows: Take ASCII value of each char in x and
+sum them (e.g., hash('abc') -> 65 + 66 + 67).
 
-See the file gcc/doc/gcc.texi (together with other files that it
-includes) for usage and porting information.  An online readable
-version of the manual is in the files gcc/doc/gcc.info*.
+Extend the C programming language to support a new language construct:
 
-See http://gcc.gnu.org/bugs/ for how to report bugs usefully.
+```
+  [[ IntExpression, Expression, IntExpression ]]
+```
 
-Copyright years on GCC source files may be listed using range
-notation, e.g., 1987-2012, indicating that every year in the range,
-inclusive, is a copyrightable year that could otherwise be listed
-individually.
+Semantics: Evaluate `Expression` and then check if the first and the
+last expressions are equal.  If yes, then stop; otherwise increment
+the first expression by one and then repete the steps.  Here is an
+example.
+
+```
+int n() { ... }
+
+int m(int a, int b) { // a=0, b=1
+    int c = [[ a, n(), b ]]; // n() will be called twice (but a and b only once each) and the result will be in c
+    return c;
+}
+```
+
+*Environment*
+
+Linux
+
+
+*Submission*
+
+Fork GCC or LLVM and share with us your private fork on GitHub.
+GitHub ids will be posted on Canvas.
+
+Your code repository needs to contain a script (named `s`) that will
+compile everything and run an example.
+
+You should include several examples to illustrate the features that
+are (not) working.
