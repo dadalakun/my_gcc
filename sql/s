@@ -1,0 +1,36 @@
+#!/bin/bash
+
+readonly JAR=antlr-4.13.0-complete.jar
+readonly OUTPUT=gen
+readonly TESTS_DIR="tests"
+
+rm -rf "${OUTPUT}"
+java -cp "${JAR}" org.antlr.v4.Tool TrinoLexer.g4 TrinoParser.g4 -visitor -o "${OUTPUT}"
+
+cp "${JAR}" "${OUTPUT}"
+cp Main.java MyTrinoVisitor.java Column.java SelectStatement.java SymbolTable.java TableSchema.java "${OUTPUT}"
+
+echo "Compiling..."
+( 
+  cd "${OUTPUT}"
+  javac -cp "${JAR}" *.java
+)
+echo "Compilation successful"
+
+# Run all test scenarios
+echo "Running tests..."
+for test_dir in "${TESTS_DIR}"/*; do
+    test_name=$(basename "${test_dir}")
+    echo "===== Running Test: ${test_name} ====="
+    
+    # Execute the Main class with all SQL files in the test directory
+    (
+        cd "${OUTPUT}"
+        java -cp ".:${JAR}" Main "../${test_dir}"/*
+    )
+    
+    echo "=================================================="
+    echo
+done
+
+echo "All tests executed."
