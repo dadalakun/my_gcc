@@ -1,0 +1,1 @@
+SELECT MIN(sale_date) FROM sales;

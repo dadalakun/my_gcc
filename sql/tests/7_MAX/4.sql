@@ -1,0 +1,1 @@
+SELECT MAX(sale_date) FROM sales;

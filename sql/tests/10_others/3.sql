@@ -1,0 +1,1 @@
+SELECT SUM(nonexistent_column) FROM sales;

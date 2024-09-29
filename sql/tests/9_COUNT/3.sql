@@ -1,0 +1,1 @@
+SELECT COUNT(description) FROM sales;
