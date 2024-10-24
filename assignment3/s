@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Requires Java 11 and Gradle.
+if [ ! -d jpf-core ]; then
+        git clone https://github.com/javapathfinder/jpf-core
+fi
+( cd jpf-core
+  sed -i 's/public void setJavaObjectInputStreamReadString.*/public void setJavaObjectInputStreamReadString() {/g' ./src/classes/modules/java.base/jdk/internal/misc/SharedSecrets.java
+  ./gradlew
+)
+
+JAVA_FILE="$1"
+MAIN_CLASS=$(grep -oP 'public\s+class\s+\K\w+' "$JAVA_FILE")
+mkdir -p results
+
+# Compile everything
+# javac -classpath ./jpf-core/build/jpf.jar Demo.java ExampleSupport.java ASupport.java CSupport.java DSupport.java ESupport.java NonSupportClass.java MemoizationListener.java CoverageListener.java
+javac -classpath ./jpf-core/build/jpf.jar *.java
+
+
+# Run example
+# jpf-core/bin/jpf +classpath=. ./jpf-core/bin/jpf +native_classpath=. +classpath=. +listener=MemoizationListener Demo
+
+
+./jpf-core/bin/jpf +native_classpath=. +classpath=. +listener=CoverageListener,MemoizationListener $MAIN_CLASS > ./results/jpf_output.txt 2>&1
