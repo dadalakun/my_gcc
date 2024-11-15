@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Compile the test classes
+javac TestClass1.java TestClass2.java TestClass3.java
+
+# Compile CFGBuilder.java with ASM dependencies
+javac -cp "asm-5.0.4.jar:asm-tree-5.0.4.jar:asm-util-5.0.4.jar" CFGBuilder.java
+
+# Run CFGBuilder on the test classes
+java -cp ".:asm-5.0.4.jar:asm-tree-5.0.4.jar:asm-util-5.0.4.jar" CFGBuilder TestClass1.class CFG1.txt
+java -cp ".:asm-5.0.4.jar:asm-tree-5.0.4.jar:asm-util-5.0.4.jar" CFGBuilder TestClass2.class CFG2.txt
+java -cp ".:asm-5.0.4.jar:asm-tree-5.0.4.jar:asm-util-5.0.4.jar" CFGBuilder TestClass3.class CFG3.txt
