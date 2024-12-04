@@ -1,4 +1,8 @@
 # tc35859 Tsai Jan Chang
+All assignments are under this repo:
+SQL => sql/
+JPF => assignment3/
+CFG => cfg/
 
 I am not albe to compile gcc14 using limited resources (free Linux machine on AWS).
 What I've done is fork the source code and initialize the script.
